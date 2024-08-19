@@ -6,7 +6,6 @@ This project is a system that provides movie recommendations using a machine lea
 - [Installation](#installation)
 - [Usage](#usage)
 - [About the Project](#about-the-project)
-- [License](#license)
 
 ## Installation
 
