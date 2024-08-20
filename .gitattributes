@@ -1,4 +1,2 @@
-*.python linguist-detecteble=true
-*.html linguist-detecteble=false
-*.css linguist-detecteble=false
-*.js linguist-detecteble=false
+*.ipynb linguist-detectable=false
+*.py linguist-language=Python
