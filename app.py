@@ -2,6 +2,7 @@ import pickle
 import streamlit as st
 import requests
 
+# Function to fetch the movie poster using TMDB API
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=74f3a5b690d1ab9cc81d92b5c35bb75e&language=en-US".format(movie_id)
     data = requests.get(url)
@@ -10,19 +11,19 @@ def fetch_poster(movie_id):
     full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
     return full_path
 
-
+# Function to recommend similar movies based on similarity scores
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
     distances = sorted(list(enumerate(similarity[index])), reverse= True, key= lambda x : x[1])
     recommended_movie_names = []
     recommended_movie_posters = []
     
+    # Fetch top 5 recommended movies
     for i in distances[1:6]:
         movie_id = movies.iloc[i[0]]['imdb_id']
         recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
     return recommended_movie_names, recommended_movie_posters
-
 
 st.header("Movie Recommendation System Using Machine Learning")
 movies = pickle.load(open('artificats/movie_list.pkl', 'rb'))
@@ -31,9 +32,11 @@ similarity = pickle.load(open('artificats/similarity.pkl', 'rb'))
 movie_list = movies['title'].values
 selected_movie = st.selectbox('Type or Select Movie', movie_list)
 
+# If the "Find Recommendation" button is clicked, fetch and display recommendations
 if st.button('Find Recommendation'):
     recommended_movie_names, recommended_movie_posters = recommend(selected_movie)
     col1, col2, col3, col4, col5 = st.columns(5)
+
     with col1:
         st.text(recommended_movie_names[0])
         st.image(recommended_movie_posters[0])
@@ -49,5 +52,6 @@ if st.button('Find Recommendation'):
     with col5:
         st.text(recommended_movie_names[4])
         st.image(recommended_movie_posters[4])
+
 
 
